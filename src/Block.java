@@ -7,7 +7,7 @@ public class Block {
         numValues = 0;
     }
 
-    public addValue(INTitialValue value){
+    public void addValue(INTitialValue value){
         values[numValues] = value;
     }
 
@@ -15,11 +15,11 @@ public class Block {
         StringBuilder table = new StringBuilder();
         String format = "%-13s %-13s";
         for (int i = 0; i < numValues; i++) {
-
             table.append(String.format(format, values[i].getName(), values[i].getValue()));
-        hdoiwad;
         }
+
+        return table.toString();
     }
 
-    public
+
 }

@@ -1,4 +1,10 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.Stack;
+
 public class BlockTracer {
 
     public static int MAX_VALUES =10;
@@ -21,8 +27,8 @@ public class BlockTracer {
         sc.close();
     }
 
-    private void parse(BufferedReader stdin){
-        Stack<Block> blockStack = new Stack<Block>();
+    private static void parse(BufferedReader stdin){
+        Stack<Block> blockStack = new Stack<>();
         String line;
 
         while((line = stdin.readLine()) != null){

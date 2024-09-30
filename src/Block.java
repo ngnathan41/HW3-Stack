@@ -13,6 +13,9 @@ public class Block {
     }
 
     public String toString(){
+        if(numValues == 0){
+            return "No local variables to print.";
+        }
         StringBuilder table = new StringBuilder();
         String format = "%-13s %-13s \n";
         table.append(String.format(format, "Variable Name", "Initial Value"));
@@ -28,7 +31,7 @@ public class Block {
             if(values[i].getName().equals(name))
                 return new int[]{1, values[i].getValue()};
         }
-        return new int[0];
+        return new int[]{0};
     }
 
 

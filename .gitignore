@@ -29,4 +29,5 @@ bin/
 .DS_Store
 
 /src/test.java
-/src/sample1.c
+/sample1.c
+/sample3.c

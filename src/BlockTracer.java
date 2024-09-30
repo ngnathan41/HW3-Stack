@@ -19,9 +19,6 @@ public class BlockTracer {
             }
             catch(Exception e){
                 System.out.println("File not found.");
-                System.out.println(e.getMessage());
-                System.out.println(e.toString());
-                break;
             }
         }
         sc.close();
@@ -30,28 +27,40 @@ public class BlockTracer {
     private static void parse(BufferedReader stdin) throws IOException {
         Stack<Block> blockStack = new Stack<>();
         String line;
-
-        while((line = stdin.readLine()) != null){
+        String[] split;
+        while((line = stdin.readLine()) != null) {
             line = line.trim();
+            split = line.split(";|/\\*|\\*/");
+            for(String str: split){
+                read(str, blockStack);
+            }
+        }
+    }
 
-            if(line.contains("{"))
+    private static void read(String line, Stack<Block> blockStack){
+            line = line.trim();
+            if(line.isEmpty())
+                return;
+            if(line.contains("{")) {
                 blockStack.push(new Block());
-            else if (line.contains("}"))
+                read(line.substring(blockStack.indexOf("{")), blockStack);
+            }
+            else if (line.contains("}")) {
                 blockStack.pop();
+                read(line.substring(1), blockStack);
+            }
             else if (line.startsWith("int ")) {
                 addVars(line, blockStack.peek());
             }
-            else if (line.contains("/*$print LOCAL*/"))
+            else if (line.contains("$print LOCAL"))
                 System.out.println(blockStack.peek());
-            else if (line.contains("/*$print ")) {
+            else if (line.contains("$print ")) {
                 printVariable(line, blockStack);
-            }
-
         }
     }
 
     private static void addVars(String line, Block block){
-        line = line.replace("int ", "").replace(";", "");
+        line = line.replace("int ", "");//.replace(";", "");
         String[] vars = line.split(",");
         for (String var: vars){
             String[] parts = var.split("=");
@@ -61,7 +70,8 @@ public class BlockTracer {
     }
 
     private static void printVariable(String line, Stack<Block> blockStack){
-        String name = line.split(" ")[1].split("\\*")[0];
+        boolean found = false;
+        String name = line.split(" ")[1];
         Stack<Block> temp = new Stack<>();
         while(!blockStack.isEmpty()){
             temp.push(blockStack.pop());
@@ -72,12 +82,16 @@ public class BlockTracer {
                 table.append(String.format(format, "Variable Name", "Initial Value"));
                 table.append(String.format(format, name, res[1]));
                 System.out.println(table);
+                found = true;
                 break;
             }
         }
 
         while(!temp.isEmpty()){
             blockStack.push(temp.pop());
+        }
+        if(!found){
+            System.out.println("Variable not found: " + name);
         }
     }
 

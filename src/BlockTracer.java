@@ -43,11 +43,11 @@ public class BlockTracer {
                 return;
             if(line.contains("{")) {
                 blockStack.push(new Block());
-                read(line.substring(line.indexOf("{")), blockStack);
+                read(line.substring(line.indexOf("{")+1), blockStack);
             }
             else if (line.contains("}")) {
                 blockStack.pop();
-                read(line.substring(1), blockStack);
+                read(line.substring(line.indexOf("}")+1), blockStack);
             }
             else if (line.startsWith("int ")) {
                 addVars(line, blockStack.peek());

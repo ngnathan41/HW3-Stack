@@ -19,6 +19,9 @@ public class BlockTracer {
             }
             catch(Exception e){
                 System.out.println("File not found.");
+                System.out.println(e.getMessage());
+                System.out.println(e.toString());
+                break;
             }
         }
         sc.close();

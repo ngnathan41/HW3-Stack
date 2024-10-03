@@ -1,11 +1,20 @@
 import java.io.*;
 import java.util.Scanner;
 import java.util.Stack;
-
+/**Implements a CLI to parse a file from user input and process in-line comment commands.
+ * @author Nathan Ng
+ *  email: nathan.ng@stonybrook.edu
+ *  ID: 116188023
+ *  Recitation: 4
+ */
 public class BlockTracer {
 
-    public static int MAX_VALUES =10;
+    public final static int MAX_VALUES =10;
 
+    /**Asks user for C filename to process.
+     *
+     * @param args args passed in.
+     */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         while(true){
@@ -24,6 +33,11 @@ public class BlockTracer {
         sc.close();
     }
 
+    /**Helper method that reads a file line by line and splits each line by tokens, then parse each part.
+     *
+     * @param stdin File to parse lines from.
+     * @throws IOException Indicates that an I/O exception has occurred.
+     */
     private static void parse(BufferedReader stdin) throws IOException {
         Stack<Block> blockStack = new Stack<>();
         String line;
@@ -37,6 +51,11 @@ public class BlockTracer {
         }
     }
 
+    /**Helper method that reads a line for specific tokens then processes them accordingly.
+     *
+     * @param line Line to parse.
+     * @param blockStack blockStack to push/pop/peek blocks from.
+     */
     private static void read(String line, Stack<Block> blockStack){
             line = line.trim();
             if(line.isEmpty())
@@ -59,6 +78,11 @@ public class BlockTracer {
         }
     }
 
+    /**Helper method that parses a line and adds each variable to the current block.
+     *
+     * @param line Line to parse variables from.
+     * @param block Current block.
+     */
     private static void addVars(String line, Block block){
         line = line.replace("int ", "");//.replace(";", "");
         String[] vars = line.split(",");
@@ -69,6 +93,11 @@ public class BlockTracer {
         }
     }
 
+    /**Helper method for print variable command that finds the name of the variable and tries to find the variable in the blockStack.
+     *
+     * @param line Line to find name of variable to read.
+     * @param blockStack blockStack that holds all initial variables.
+     */
     private static void printVariable(String line, Stack<Block> blockStack){
         boolean found = false;
         String name = line.split(" ")[1];

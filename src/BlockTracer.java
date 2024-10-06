@@ -60,7 +60,22 @@ public class BlockTracer {
             line = line.trim();
             if(line.isEmpty())
                 return;
-            if(line.contains("{")) {
+
+        /**As a result of the way the lines are parsed, '{' and '}' will always come first
+         * and therefore can be executed first. Comments do not have brackets so it
+         * does not matter.
+         */
+        if(line.contains("{") && line.contains("}")){
+                if(line.indexOf("{") < line.indexOf("}")){
+                    blockStack.push(new Block());
+                    read(line.substring(line.indexOf("{")+1), blockStack);
+                }
+                else{
+                    blockStack.pop();
+                    read(line.substring(line.indexOf("}")+1), blockStack);
+                }
+            }
+            else if(line.contains("{")) {
                 blockStack.push(new Block());
                 read(line.substring(line.indexOf("{")+1), blockStack);
             }
@@ -84,6 +99,9 @@ public class BlockTracer {
      * @param block Current block.
      */
     private static void addVars(String line, Block block){
+        /**
+         * Splits by comma and finds associated value otherwise defaults to 0.
+         */
         line = line.replace("int ", "");//.replace(";", "");
         String[] vars = line.split(",");
         for (String var: vars){
